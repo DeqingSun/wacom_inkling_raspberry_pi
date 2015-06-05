@@ -1,0 +1,7 @@
+#!/bin/bash
+sudo ./websocketd --port=8123 ./read_inkling_4
+
+
+
+
+

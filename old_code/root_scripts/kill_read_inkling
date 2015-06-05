@@ -1,0 +1,12 @@
+#!/bin/bash
+pkill read_inkling
+VAR_1=$?
+while [ $VAR_1 == 0  ]
+do
+pkill read_inkling
+VAR_1=$?
+done
+
+
+
+

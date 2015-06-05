@@ -1,0 +1,21 @@
+#!/bin/bash
+
+sudo pkill ftee
+sudo pkill websocketd
+sudo pkill read_inkling_4
+
+sleep 1
+
+
+rm /tmp/spit_ori* 2> /dev/null
+mkfifo /tmp/spit_ori1
+mkfifo /tmp/spit_ori2
+mkfifo /tmp/spit_ori3
+mkfifo /tmp/spit_ori4
+
+sudo /home/pi/root_scripts/read_inkling_4 | ftee /tmp/spit_ori1 | ftee /tmp/spit_ori2 | ftee /tmp/spit_ori3 | ftee /tmp/spit_ori4 >/dev/null &
+ 
+sudo /home/pi/root_scripts/websocketd --port=8123 /home/pi/root_scripts/bash_connect &
+
+
+

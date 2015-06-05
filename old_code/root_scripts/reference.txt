@@ -1,0 +1,5 @@
+visudo
+
+http://superuser.com/questions/440363/can-i-make-a-script-always-execute-as-root
+
+

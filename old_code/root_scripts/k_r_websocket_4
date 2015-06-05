@@ -1,0 +1,10 @@
+#!/bin/bash
+pkill websocketd
+VAR_1=$?
+while [ $VAR_1 == 0  ]
+do
+pkill websocketd
+VAR_1=$?
+done
+sudo nohup /home/pi/root_scripts/websocketd --port=8123 /home/pi/root_scripts/read_inkling_4 > /dev/null 2>&1 &
+

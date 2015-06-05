@@ -1,0 +1,6 @@
+
+
+sudo apt-get install libusb-1.0-0-dev
+gcc -o usbtest usbtest.c -I/usr/include/libusb-1.0/ -lusb-1.0
+
+

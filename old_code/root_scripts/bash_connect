@@ -1,0 +1,21 @@
+#!/bin/bash
+
+
+END=4
+
+for ((i=1;i<=END;i++)); do
+    lsof /tmp/spit_ori$i | grep cat > /dev/null
+	if [ "$?" = "0" ]; then
+		#echo /tmp/spit_ori$i in use
+		:
+    else
+		#echo /tmp/spit_ori$i not in use
+		:
+		break
+    fi
+done
+if [ $i -gt $END ]; then
+	echo ALL $END slots are occupied
+else
+	cat /tmp/spit_ori$i
+fi
