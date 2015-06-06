@@ -1,1 +1,6 @@
-# wacom_inkling_raspberry_pi
+#Experiment Log
+
+##Start a new noob setup
+https://www.raspberrypi.org/help/noobs-setup/
+
+
