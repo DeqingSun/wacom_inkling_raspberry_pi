@@ -15,19 +15,8 @@ sudo raspi-config
 
 ~~sudo apt-get install npm~~
 
-
-
-wget http://nodejs.org/dist/latest/node-v0.12.4.tar.gz
-
-tar -xvf node-v0.12.4.tar.gz
-
-cd node-v0.12.4/
- 
-./configure
-
-make
-
-sudo make install
+wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
+sudo dpkg -i node_latest_armhf.deb
 
 ##Install .local domain (seems already installed on new release)
 ~~sudo apt-get install avahi-daemon~~ Not needed for new release
