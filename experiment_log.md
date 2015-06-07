@@ -1,7 +1,14 @@
 #Experiment Log
 
-##Start a new noob setup
-https://www.raspberrypi.org/help/noobs-setup/
+##~~Start a new noob setup~~
+~~https://www.raspberrypi.org/help/noobs-setup/~~
+
+##Start a RASPBIAN setup
+
+sudo raspi-config
+
+
+
 
 ##Install Node JS
 sudo apt-get install nodejs
