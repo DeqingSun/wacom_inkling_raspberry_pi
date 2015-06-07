@@ -16,6 +16,7 @@ sudo raspi-config
 ~~sudo apt-get install npm~~
 
 wget http://node-arm.herokuapp.com/node_latest_armhf.deb 
+
 sudo dpkg -i node_latest_armhf.deb
 
 ##Install .local domain (seems already installed on new release)
