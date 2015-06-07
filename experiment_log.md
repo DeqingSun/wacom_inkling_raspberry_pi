@@ -11,9 +11,9 @@ sudo raspi-config
 
 
 ##Install Node JS
-sudo apt-get install nodejs
+~~sudo apt-get install nodejs~~
 
-sudo apt-get install npm
+~~sudo apt-get install npm~~
 
 
 
@@ -23,7 +23,7 @@ tar -xvf node-v0.12.4.tar.gz
 
 
 
-##Install .local domain (seems already installed on new release?)
-sudo apt-get install avahi-daemon
+##Install .local domain (seems already installed on new release)
+~~sudo apt-get install avahi-daemon~~ Not needed for new release
 
  
