@@ -2,6 +2,16 @@ var localSocketList=[];
 
 function startProcess(socketList) {
     localSocketList=socketList;
+    
+    console.log('Kill old read_inkling');
+    var exec = require('child_process').execFileSync;
+    try {
+        exec('pkill', ['read_inkling']);
+    } catch(err) {
+        console.log('No old read_inkling to kill');        
+    }
+
+    console.log('Start new read_inkling');
     var spawn = require('child_process').spawn,
         inklingProcess    = spawn('./read_inkling', []);
     var inklingBuffer = "";
