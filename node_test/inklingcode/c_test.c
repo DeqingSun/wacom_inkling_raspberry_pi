@@ -26,7 +26,7 @@ static const int HID_REPORT_TYPE_OUTPUT = 0x02;
 static const int HID_REPORT_TYPE_FEATURE = 0x03;
 
 static const int INTERFACE_NUMBER = 0;
-static const int TIMEOUT_MS = 5000;
+static const int TIMEOUT_MS = 1000;
 
 unsigned char data_in[64];
 unsigned char data_out[64];
@@ -158,14 +158,13 @@ int main(int argc, char **argv) {
 
   printf("Successfully find device\n");
 
-
-#ifdef LINUX 
-  if (libusb_kernel_driver_active==1){
+//#ifdef LINUX 
+  if (libusb_kernel_driver_active(devh,0)==1){
     printf("Device busy...detaching...\n"); 
     attached = 1;
     libusb_detach_kernel_driver(devh, 0);   
   }
-#endif 
+//#endif 
 
 
   err = libusb_claim_interface( devh, 0 );
@@ -242,7 +241,7 @@ int main(int argc, char **argv) {
 	  break;
 	  
     case LIBUSB_ERROR_TIMEOUT :	
-      printf( "LIBUSB_ERROR_TIMEOUT \n" );	break;
+      printf( "LIBUSB_ERROR_TIMEOUT (Don't worry)\n" );	break;
     case LIBUSB_ERROR_PIPE :		
       printf( "LIBUSB_ERROR_PIPE \n" );		break;
     case LIBUSB_ERROR_OVERFLOW :	
