@@ -9,7 +9,7 @@ wss.on('connection', function(ws) {
     if (socketList.indexOf(ws)==-1) socketList.push(ws);
     console.log('We have %d connections', socketList.length);
     
-    ws.send('something');
+    //ws.send('something');
     
     ws.on('message', function(data, flags) {
         console.log('received: %s', data);
@@ -38,22 +38,26 @@ wss.on('connection', function(ws) {
 });
 
 var spawn = require('child_process').spawn,
-    ls    = spawn('./count.sh', []);
-
-ls.stdout.on('data', function (data) {
-    //console.log('stdout: ' + data);
-    //console.log(socketList);
-    for (var singleSocket of socketList){
-        //console.log('send to %s', singleSocket.upgradeReq.connection.remoteAddress);
-        singleSocket.send(String(data));
+    inklingProcess    = spawn('./read_inkling', []);
+var inklingBuffer = "";
+inklingProcess.stdout.on('data', function (data) {
+    var i = 0, piece = '', offset = 0;
+    inklingBuffer += String(data);
+    while ( (i = inklingBuffer.indexOf('\n', offset)) !== -1) {
+	piece = inklingBuffer.substr(offset, i - offset);
+	offset = i + 1;
+	for (var singleSocket of socketList){
+            singleSocket.send(piece);    
+        }
     }
+    inklingBuffer = inklingBuffer.substr(offset);    
 });
 
-ls.stderr.on('data', function (data) {
+inklingProcess.stderr.on('data', function (data) {
   console.log('stderr: ' + data);
 });
 
-ls.on('close', function (code) {
+inklingProcess.on('close', function (code) {
   console.log('child process exited with code ' + code);
 });
 
