@@ -37,3 +37,25 @@ wss.on('connection', function(ws) {
 
 });
 
+var spawn = require('child_process').spawn,
+    ls    = spawn('./count.sh', []);
+
+ls.stdout.on('data', function (data) {
+    //console.log('stdout: ' + data);
+    //console.log(socketList);
+    for (var singleSocket of socketList){
+        //console.log('send to %s', singleSocket.upgradeReq.connection.remoteAddress);
+        singleSocket.send(String(data));
+    }
+});
+
+ls.stderr.on('data', function (data) {
+  console.log('stderr: ' + data);
+});
+
+ls.on('close', function (code) {
+  console.log('child process exited with code ' + code);
+});
+
+
+
