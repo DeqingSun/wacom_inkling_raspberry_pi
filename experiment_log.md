@@ -16,7 +16,9 @@ wget http://node-arm.herokuapp.com/node_latest_armhf.deb
 
 sudo dpkg -i node_latest_armhf.deb
 
-npm install ws       _(Do this in code path)_
+npm install ws       ~~_(Do this in code path)_~~
+
+npm install express
 
 ##Install .local domain (seems already installed on new release)
 ~~sudo apt-get install avahi-daemon~~ Not needed for new release
