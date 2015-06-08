@@ -7,9 +7,6 @@
 
 sudo raspi-config
 
-
-
-
 ##Install Node JS
 ~~sudo apt-get install nodejs~~
 
@@ -21,9 +18,9 @@ sudo dpkg -i node_latest_armhf.deb
 
 npm install ws       _(Do this in code path)_
 
-
-
 ##Install .local domain (seems already installed on new release)
 ~~sudo apt-get install avahi-daemon~~ Not needed for new release
 
+##Compile C code in inklingcode
+Follow how_I_compile.txt, compiled code need to be run with sudo.
  
