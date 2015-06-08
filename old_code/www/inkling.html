@@ -1,0 +1,88 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Untitled Document</title>
+
+<script language="javascript" type="text/javascript">  
+var wsUri;
+var output;  
+var his_x,his_y,his_p=0;
+var threshold=50;
+function init() { 
+  wsUri = "ws://"+window.location.host+":8123";
+  output = document.getElementById("output"); 
+  testWebSocket(); 
+  
+}  
+function testWebSocket() { 
+  websocket = new WebSocket(wsUri); 
+  websocket.onopen = function(evt) { onOpen(evt) }; 
+  websocket.onclose = function(evt) { onClose(evt) }; 
+  websocket.onmessage = function(evt) { onMessage(evt) }; 
+  websocket.onerror = function(evt) { onError(evt) }; 
+}  
+function onOpen(evt) { 
+  writeToScreen("CONNECTED"); 
+  //doSend("WebSocket rocks"); 
+}  
+function onClose(evt) { 
+  writeToScreen("DISCONNECTED"); 
+}  
+function onMessage(evt) { 
+  //data parsing
+  
+  // Split it up into numbers and spaces
+  var array = evt.data.split("\t");
+  //console.log(array);
+  if (array.length==6){
+    var x=parseInt(array[0].substring(2).trim(),10);
+	var y=parseInt(array[1].substring(2).trim(),10);
+	var p=parseInt(array[3].substring(2).trim(),10);
+	
+	if (p>threshold && his_p>threshold){
+	  var c=document.getElementById("myCanvas");
+      var ctx=c.getContext("2d");
+
+      ctx.beginPath(); 
+      ctx.moveTo(his_x/2,his_y/2);
+      ctx.lineTo(x/2,y/2);
+      ctx.stroke(); // Draw it	
+	}
+	
+	his_x=x;
+	his_y=y;
+	his_p=p;
+	console.log(x + " " + y + " " + p);
+  }
+   // Keep just the numbers
+  // array = array.filter(function(i) {return "" + +i == i});
+
+   // Convert back to a number
+  // array = array.map(function(i) {return +i});
+  
+  writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>'); 
+  
+  //websocket.close(); 
+}  
+function onError(evt) { 
+  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data); 
+}  
+function doSend(message) { 
+  writeToScreen("SENT: " + message);  websocket.send(message); 
+}  
+function writeToScreen(message) { 
+  output.innerHTML=message; 
+}  
+window.addEventListener("load", init, false);  
+</script>
+
+</head>
+
+<body>
+  <h2>WebSocket Test</h2>  
+  <div id="output"></div>
+  
+  <canvas id="myCanvas" width="960" height="960" style="border:1px solid #d3d3d3;">
+</body>
+</html>
