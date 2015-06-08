@@ -22,5 +22,10 @@ npm install ws       _(Do this in code path)_
 ~~sudo apt-get install avahi-daemon~~ Not needed for new release
 
 ##Compile C code in inklingcode
-Follow how_I_compile.txt, compiled code need to be run with sudo.
+Follow how_I_compile.txt, ~~compiled code need to be run with sudo~~.
+
+Copy _inkling.rules_ to _/etc/udev/rules.d/41-inkling.rules_ and run _sudo service udev restart_
+
+Then you don't need root to access inkling.
+
  
