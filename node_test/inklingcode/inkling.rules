@@ -1,1 +1,1 @@
-ATTRS{idVendor}=="056a",ATTRS{idProduct}=="0221",SUBSYSTEM=="usb", ACTION=="add",GROUP="plugdev", MODE="0666"
+ATTRS{idVendor}=="056a",ATTRS{idProduct}=="0221",SUBSYSTEM=="usb", ACTION=="add", MODE="0666", GROUP="plugdev"
