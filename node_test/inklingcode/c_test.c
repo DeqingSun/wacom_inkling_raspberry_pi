@@ -26,7 +26,7 @@ static const int HID_REPORT_TYPE_OUTPUT = 0x02;
 static const int HID_REPORT_TYPE_FEATURE = 0x03;
 
 static const int INTERFACE_NUMBER = 0;
-static const int TIMEOUT_MS = 1000;
+static const int TIMEOUT_MS = 100;
 
 unsigned char data_in[64];
 unsigned char data_out[64];
@@ -242,13 +242,19 @@ int main(int argc, char **argv) {
 	      int pressure=data_in[8]+data_in[9]*256;
 	      int x_tilt=(signed char)data_in[10];
 	      int y_tilt=(signed char)data_in[11];
+	      static int button_last=0;
 	      if (debug_output){
 		printf("x:%d\ty:%d\tb:%d\tp:%d\txt:%d\tyt:%d\n",x,y,button,pressure,x_tilt,y_tilt);
 	      }else{
 		if (button!=0){
-		  printf("p:%d %d\n",x,y);
+		  printf("d:%d %d\n",x,y);
+		}else{
+		  if (button_last!=0){
+		    printf("u:\n");
+		  }
 		}
 	      }
+	      button_last=button;
 	    }else{
 	      if (debug_output){
 		for(i = 0; i < bytes_transferred; i++){

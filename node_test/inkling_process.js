@@ -21,8 +21,10 @@ function startProcess(socketList) {
         while ( (i = inklingBuffer.indexOf('\n', offset)) !== -1) {
             piece = inklingBuffer.substr(offset, i - offset);
             offset = i + 1;
-            for (var singleSocket of localSocketList){
-                singleSocket.send(piece);    
+            if ((piece.charAt(0)=='d' || piece.charAt(0)=='u') && piece.charAt(1)==':' ) {
+                for (var singleSocket of localSocketList){
+                    singleSocket.send(piece);    
+                }
             }
         }
         inklingBuffer = inklingBuffer.substr(offset);    

@@ -33,29 +33,37 @@ function onMessage(evt) {
   //data parsing
   
   // Split it up into numbers and spaces
-  var array = evt.data.split("\t");
-  //console.log(array);
-  if (array.length==6){
-    var x=parseInt(array[0].substring(2).trim(),10);
-	var y=parseInt(array[1].substring(2).trim(),10);
-	var p=parseInt(array[3].substring(2).trim(),10);
+  if (evt.data.startsWith("d:")) {
+    var pos_data=evt.data.substring(2).trim();
+      var array = pos_data.split(" ");
+      //console.log(array);
+      if (array.length==2){
+	var x=parseInt(array[0].trim(),10);
+	var y=parseInt(array[1].trim(),10);
+	    //var p=parseInt(array[3].substring(2).trim(),10);
+	    
+	    if (his_p==true){
+	      var c=document.getElementById("myCanvas");
+	      var ctx=c.getContext("2d");
 	
-	if (p>threshold && his_p>threshold){
-	  var c=document.getElementById("myCanvas");
-	  var ctx=c.getContext("2d");
-    
-	  ctx.beginPath(); 
-	  ctx.moveTo((his_x+10000)/20,(his_y-1000)/20);
-	  ctx.lineTo((x+10000)/20,(y-1000)/20);
-	  ctx.stroke(); // Draw it
-	  console.log("DRAW");
-	}
-	
-	his_x=x;
-	his_y=y;
-	his_p=p;
-	console.log(x + " " + y + " " + p);
+	      ctx.beginPath(); 
+	      ctx.moveTo((his_x+10000)/20,(his_y-1000)/20);
+	      ctx.lineTo((x+10000)/20,(y-1000)/20);
+	      ctx.stroke(); // Draw it
+	      console.log("DRAW");
+	    }
+	    
+	    his_x=x;
+	    his_y=y;
+	    his_p=true;
+	    //console.log(x + " " + y + " " + p);
+      }
+  } else if (evt.data.startsWith("u:")) {
+    his_p=false;
   }
+  
+  
+
    // Keep just the numbers
   // array = array.filter(function(i) {return "" + +i == i});
 
