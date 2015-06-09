@@ -1,0 +1,480 @@
+<html><head>
+<title>USBlyzer Report</title>
+<style type="text/css">
+body {padding:0px 0px 0px 0px;background:#fff;color:#000;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:8pt;}
+th {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background:#c9c9c9;color:#fff;text-align:left;font-size:8pt;font-weight:normal;vertical-align:bottom;border:#fff 1px solid;}
+td {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background:#fff;vertical-align:top;font-size:8pt;}
+th.ud {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background:#c9c9c9;color:#fff;text-align:left;font-size:8pt;font-weight:normal;vertical-align:bottom;border:#fff 1px solid;}
+td.ud {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background:#fff;vertical-align:top;font-size:8pt;}
+td.udofs {padding-top:0px;padding-right:8px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;background:#fff;vertical-align:top;font-size:8pt;text-align:right;}
+td.udsiz {padding-top:0px;padding-right:8px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;background:#fff;vertical-align:top;font-size:8pt;text-align:right;}
+td.udval {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;background:#fff;vertical-align:top;font-size:8pt;text-align:right;}
+td.udfld {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background:#fff;vertical-align:top;font-size:8pt;}
+td.udbmfld {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:20px;background:#fff;vertical-align:top;font-size:8pt;white-space:nowrap;}
+td.udhex {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;background:#fff;vertical-align:top;font-size:8pt;text-align:left;white-space:nowrap;}
+td.uddes {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background:#fff;vertical-align:top;font-size:8pt;}
+div.uddiv1 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:12px;margin-right:0px;margin-bottom:4px;margin-left:1px;text-align:left;}
+div.uddiv2 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:4px;margin-right:0px;margin-bottom:4px;margin-left:12px;text-align:left;}
+div.uddiv3 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:2px;margin-right:0px;margin-bottom:2px;margin-left:0px;text-align:left;}
+div.uddiv4 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:2px;margin-right:0px;margin-bottom:2px;margin-left:20px;text-align:left;}
+div.uddiv5 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:6px;margin-right:0px;margin-bottom:6px;margin-left:20px;text-align:left;}
+div.uddiv6 {font-size:8pt;font-style:normal;font-weight:bold;text-decoration:none;margin-top:6px;margin-right:0;margin-bottom:4px;margin-left:0;text-align:left;}
+div.uddiv7 {font-size:8pt;font-style:normal;font-weight:normal;text-decoration:none;margin-top:2px;margin-right:0;margin-bottom:4px;margin-left:0;text-align:left;}
+a {color:#000;text-decoration:none;white-space:nowrap;}
+a:link {color:#000;text-decoration:none;white-space:nowrap;}
+a:hover {color:#000;text-decoration:none;white-space:nowrap;}
+a:visited {color:#000;text-decoration:none;white-space:nowrap;}
+a:active {color:#000;text-decoration:none;white-space:nowrap;}
+a.totop {color:#ccc;font-family:"Courier New",Courier,mono;text-decoration:none;white-space:nowrap;margin-left:8px;}
+.error {color:#f00;}
+div.hrddiv1 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:12px;margin-right:0px;margin-bottom:4px;margin-left:1px;text-align:left;}
+div.hrddiv2 {font-size:8pt;font-style:normal;text-decoration:none;margin-top:2px;margin-right:0px;margin-bottom:2px;margin-left:0px;text-align:left;}
+th.hrd {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;background-color:#c9c9c9;color:#fff;text-align:left;font-size:8pt;white-space:nowrap;vertical-align:bottom;border:#fff 1px solid;font-weight:normal;}
+td.hrdn {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;vertical-align:top;font-size:8pt;white-space:nowrap;background-color:#fff;}
+td.hrdm {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;vertical-align:top;font-size:8pt;text-align:left;white-space:nowrap;background-color:#fff;}
+td.hrdnin {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;vertical-align:top;font-size:8pt;white-space:nowrap;background-color:#e0ffe0;border:#e0ffe0 1px solid;}
+td.hrdmin {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;vertical-align:top;font-size:8pt;text-align:left;white-space:nowrap;background-color:#e0ffe0;border:#e0ffe0 1px solid;}
+td.hrdnout {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;vertical-align:top;font-size:8pt;white-space:nowrap;background-color:#ffe4e4;border:#ffe4e4 1px solid;}
+td.hrdmout {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;vertical-align:top;font-size:8pt;text-align:left;white-space:nowrap;background-color:#ffe4e4;border:#ffe4e4 1px solid;}
+td.hrdnfea {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;vertical-align:top;font-size:8pt;white-space:nowrap;background-color:#ffffd4;border:#ffffd4 1px solid;}
+td.hrdmfea {padding-top:0px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:"Courier New",Courier,mono;vertical-align:top;font-size:8pt;text-align:left;white-space:nowrap;background-color:#ffffd4;border:#ffffd4 1px solid;}
+</style>
+</head>
+<body><a name="top"></a>
+<p align="left" style="padding-top:3px;padding-right:3px;padding-bottom:0px;padding-left:3px;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:9pt;font-weight:bold;">&#x0055;&#x0053;&#x0042;&#x0020;&#x0049;&#x006E;&#x0070;&#x0075;&#x0074;&#x0020;&#x0044;&#x0065;&#x0076;&#x0069;&#x0063;&#x0065;</p>
+<table cellspacing="0">
+</table>
+<div class="hrddiv1"><a name="n466cfc1000000000"><b>Interface 0 HID Report Descriptor</b> Pen</a></div>
+<table cellspacing="0">
+<tr>
+<th class="hrd">Item Tag (Value)</th>
+<th class="hrd">Raw Data</th>
+</tr>
+<tr>
+<td class="hrdn">Usage Page (Digitizer)</td>
+<td class="hrdm">05&nbsp;0D&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">Usage (Pen)</td>
+<td class="hrdm">09&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">Collection (Application)</td>
+<td class="hrdm">A1&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report ID (2)</td>
+<td class="hrdm">85&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage (Pen)</td>
+<td class="hrdm">09&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Collection (Physical)</td>
+<td class="hrdm">A1&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Generic Desktop)</td>
+<td class="hrdm">05&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (X)</td>
+<td class="hrdm">09&nbsp;30&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Y)</td>
+<td class="hrdm">09&nbsp;31&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (1920)</td>
+<td class="hrdm">26&nbsp;80&nbsp;07&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Minimum (0)</td>
+<td class="hrdm">35&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Maximum (30720)</td>
+<td class="hrdm">46&nbsp;00&nbsp;78&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit (SI Lin: Length (cm))</td>
+<td class="hrdm">65&nbsp;11&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit Exponent (-2)</td>
+<td class="hrdm">55&nbsp;0E&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (16)</td>
+<td class="hrdm">75&nbsp;10&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (2)</td>
+<td class="hrdm">95&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Digitizer)</td>
+<td class="hrdm">05&nbsp;0D&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Tip Switch)</td>
+<td class="hrdm">09&nbsp;42&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Eraser)</td>
+<td class="hrdm">09&nbsp;45&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Barrel Switch)</td>
+<td class="hrdm">09&nbsp;44&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (In Range)</td>
+<td class="hrdm">09&nbsp;32&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (1)</td>
+<td class="hrdm">25&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (1)</td>
+<td class="hrdm">75&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (4)</td>
+<td class="hrdm">95&nbsp;04&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit (None)</td>
+<td class="hrdm">65&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Button)</td>
+<td class="hrdm">05&nbsp;09&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Minimum (Button 1)</td>
+<td class="hrdm">19&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Maximum (Button 4)</td>
+<td class="hrdm">29&nbsp;04&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (1)</td>
+<td class="hrdm">25&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (1)</td>
+<td class="hrdm">75&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (4)</td>
+<td class="hrdm">95&nbsp;04&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Digitizer)</td>
+<td class="hrdm">05&nbsp;0D&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Tip Pressure)</td>
+<td class="hrdm">09&nbsp;30&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (1024)</td>
+<td class="hrdm">26&nbsp;00&nbsp;04&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (16)</td>
+<td class="hrdm">75&nbsp;10&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (1)</td>
+<td class="hrdm">95&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Digitizer)</td>
+<td class="hrdm">05&nbsp;0D&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (X Tilt)</td>
+<td class="hrdm">09&nbsp;3D&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Y Tilt)</td>
+<td class="hrdm">09&nbsp;3E&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (-127)</td>
+<td class="hrdm">15&nbsp;81&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (127)</td>
+<td class="hrdm">25&nbsp;7F&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (8)</td>
+<td class="hrdm">75&nbsp;08&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (2)</td>
+<td class="hrdm">95&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;End Collection</td>
+<td class="hrdm">C0&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Generic Desktop)</td>
+<td class="hrdm">05&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage (Undefined)</td>
+<td class="hrdm">09&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report ID (4)</td>
+<td class="hrdm">85&nbsp;04&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (255)</td>
+<td class="hrdm">26&nbsp;FF&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report Size (8)</td>
+<td class="hrdm">75&nbsp;08&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report Count (12)</td>
+<td class="hrdm">95&nbsp;0C&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Generic Desktop)</td>
+<td class="hrdm">05&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage (Undefined)</td>
+<td class="hrdm">09&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report ID (8)</td>
+<td class="hrdm">85&nbsp;08&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (255)</td>
+<td class="hrdm">26&nbsp;FF&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report Size (8)</td>
+<td class="hrdm">75&nbsp;08&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report Count (59)</td>
+<td class="hrdm">95&nbsp;3B&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage (Pointer)</td>
+<td class="hrdm">09&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report ID (128)</td>
+<td class="hrdm">85&nbsp;80&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report Size (8)</td>
+<td class="hrdm">75&nbsp;08&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report Count (32)</td>
+<td class="hrdm">95&nbsp;20&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;<b>Feature</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,NVol,Bit)</td>
+<td class="hrdm">B1&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">End Collection</td>
+<td class="hrdm">C0&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">Usage Page (Generic Desktop)</td>
+<td class="hrdm">05&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">Usage (Mouse)</td>
+<td class="hrdm">09&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">Collection (Application)</td>
+<td class="hrdm">A1&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Report ID (1)</td>
+<td class="hrdm">85&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Usage (Pointer)</td>
+<td class="hrdm">09&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;Collection (Physical)</td>
+<td class="hrdm">A1&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Generic Desktop)</td>
+<td class="hrdm">05&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (X)</td>
+<td class="hrdm">09&nbsp;30&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage (Y)</td>
+<td class="hrdm">09&nbsp;31&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (1920)</td>
+<td class="hrdm">26&nbsp;80&nbsp;07&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Minimum (0)</td>
+<td class="hrdm">35&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Physical Maximum (30720)</td>
+<td class="hrdm">46&nbsp;00&nbsp;78&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit (SI Lin: Length (cm))</td>
+<td class="hrdm">65&nbsp;11&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit Exponent (-2)</td>
+<td class="hrdm">55&nbsp;0E&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (16)</td>
+<td class="hrdm">75&nbsp;10&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (2)</td>
+<td class="hrdm">95&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Page (Button)</td>
+<td class="hrdm">05&nbsp;09&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Minimum (Button 1)</td>
+<td class="hrdm">19&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Usage Maximum (Button 3)</td>
+<td class="hrdm">29&nbsp;03&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Minimum (0)</td>
+<td class="hrdm">15&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Logical Maximum (1)</td>
+<td class="hrdm">25&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Size (1)</td>
+<td class="hrdm">75&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (3)</td>
+<td class="hrdm">95&nbsp;03&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Unit (None)</td>
+<td class="hrdm">65&nbsp;00&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Data,Var,Abs,NWrp,Lin,Pref,NNul,Bit)</td>
+<td class="hrdm">81&nbsp;02&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Report Count (5)</td>
+<td class="hrdm">95&nbsp;05&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Input</b> (Cnst,Ary,Abs)</td>
+<td class="hrdm">81&nbsp;01&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">&nbsp;&nbsp;&nbsp;&nbsp;End Collection</td>
+<td class="hrdm">C0&nbsp;</td>
+</tr>
+<tr>
+<td class="hrdn">End Collection</td>
+<td class="hrdm">C0&nbsp;</td>
+</tr>
+</table>
+<p align="center" style="padding:0;color:#ccc;font-family:Arial,Verdana,Helvetica,sans-serif;font-size:8pt;">This report was generated by <a style="color:#ccc;text-decoration:none;" href="http://www.usblyzer.com/">USBlyzer</a></p>
+</body>
+</html>
