@@ -30,4 +30,7 @@ Copy _inkling.rules_ to _/etc/udev/rules.d/41-inkling.rules_ and run _sudo servi
 
 Then you don't need root to access inkling.
 
+##Use nodejs on 80 port
+sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-port 8080
+ 
  
