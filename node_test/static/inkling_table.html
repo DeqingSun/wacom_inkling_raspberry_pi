@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Inkling table</title>
+
+<script language="javascript" type="text/javascript">  
+var wsUri;
+var output;  
+var his_x,his_y,his_p=0;
+var threshold=50;
+var nowCalibrating=-1;
+var cornerX=[0,1,1,0];
+var cornerY=[0,0,1,1];
+var strokeX=[];
+var strokeY=[];
+
+function init() { 
+  wsUri = "ws://"+window.location.hostname+":8081";
+  output = document.getElementById("output"); 
+  testWebSocket(); 
+  
+}  
+function testWebSocket() { 
+  websocket = new WebSocket(wsUri); 
+  websocket.onopen = function(evt) { onOpen(evt) }; 
+  websocket.onclose = function(evt) { onClose(evt) }; 
+  websocket.onmessage = function(evt) { onMessage(evt) }; 
+  websocket.onerror = function(evt) { onError(evt) }; 
+}  
+function onOpen(evt) { 
+  writeToScreen("CONNECTED"); 
+  //doSend("WebSocket rocks"); 
+}  
+function onClose(evt) { 
+  writeToScreen("DISCONNECTED"); 
+}  
+function onMessage(evt) { 
+  //data parsing
+  
+  // Split it up into numbers and spaces
+  if (evt.data.startsWith("d:")) {
+    var pos_data=evt.data.substring(2).trim();
+      var array = pos_data.split(" ");
+      //console.log(array);
+      if (array.length==2){
+	var x=parseInt(array[0].trim(),10);
+	var y=parseInt(array[1].trim(),10);
+	    //var p=parseInt(array[3].substring(2).trim(),10);
+	    
+	    if (his_p==true){
+	      var c=document.getElementById("myCanvas");
+	      var ctx=c.getContext("2d");
+	
+	      ctx.beginPath(); 
+	      ctx.moveTo((his_x+10000)/20,(his_y-1000)/20);
+	      ctx.lineTo((x+10000)/20,(y-1000)/20);
+	      ctx.stroke(); // Draw it
+	      console.log("DRAW");
+	    }
+	    
+	    his_x=x;
+	    his_y=y;
+	    his_p=true;
+	    strokeX.push(x);
+	    strokeY.push(y);
+	    //console.log(x + " " + y + " " + p);
+      }
+  } else if (evt.data.startsWith("u:")) {
+    his_p=false;
+    if (nowCalibrating>=0) {
+      cornerX[nowCalibrating]=his_x;
+      cornerY[nowCalibrating]=his_y;
+      switch(nowCalibrating){
+	case 0:
+	  nowCalibrating=1;
+	  document.getElementById("caliBtn").value="Calibrating upper right";
+	  break;
+	case 1:
+	  nowCalibrating=2;
+	  document.getElementById("caliBtn").value="Calibrating lower right";
+	  break;
+	case 2:
+	  nowCalibrating=3;
+	  document.getElementById("caliBtn").value="Calibrating lower left";
+	  break;
+	case 3:
+	  nowCalibrating=-1;
+	  document.getElementById("caliBtn").value="Calibrated";
+	  break;
+      }
+    }else{
+      //calculate center of stroke
+      var stroke_centerX = (Math.min.apply(null, strokeX)+Math.max.apply(null, strokeX))/2;
+      var stroke_centerY = (Math.min.apply(null, strokeY)+Math.max.apply(null, strokeY))/2;
+      
+      //ctx.fillRect(((stroke_centerX+10000)/20)-5,((stroke_centerY-1000)/20)-5,10,10); // fill in the pixel at (10,10)
+      
+      if (pnpoly(4, cornerX, cornerY, stroke_centerX, stroke_centerY)) {
+	console.log("IN");
+      }else{
+	console.log("OUT");
+      }
+      
+      strokeX=[];
+      strokeY=[];
+    }
+  }
+  
+  
+
+   // Keep just the numbers
+  // array = array.filter(function(i) {return "" + +i == i});
+
+   // Convert back to a number
+  // array = array.map(function(i) {return +i});
+  
+  writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>'); 
+  
+  //websocket.close(); 
+}  
+function onError(evt) { 
+  writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data); 
+}  
+function doSend(message) { 
+  writeToScreen("SENT: " + message);  websocket.send(message); 
+}  
+function writeToScreen(message) { 
+  output.innerHTML=message; 
+}  
+window.addEventListener("load", init, false);
+
+
+function CalibrateCells() {
+  nowCalibrating=0;
+  document.getElementById("caliBtn").value="Calibrating upper left";
+}
+
+
+
+
+//util
+function pnpoly(nvert, vertx, verty, testx, testy){
+  var i, j, c = 0;
+  for (i = 0, j = nvert-1; i < nvert; j = i++) {
+    if ( ((verty[i]>testy) != (verty[j]>testy)) && ((testx-vertx[i]) < ((vertx[j]-vertx[i]) * (testy-verty[i]) / (verty[j]-verty[i]) ))  ) c = !c;
+  }
+  return c;
+}
+
+</script>
+
+</head>
+
+<body>
+  <h2>WebSocket Table test</h2>  
+  <div id="output"></div>
+  <div>
+    <input type="button" id="caliBtn" onclick="CalibrateCells()" value="Calibrate" >
+  </div>
+  <canvas id="myCanvas" width="1000" height="1200" style="border:1px solid #d3d3d3;">
+</body>
+</html>
