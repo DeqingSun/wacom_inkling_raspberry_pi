@@ -26,6 +26,7 @@ function startProcess(socketList) {
                     singleSocket.send(piece);    
                 }
             }
+            //console.log(piece);
         }
         inklingBuffer = inklingBuffer.substr(offset);    
     });

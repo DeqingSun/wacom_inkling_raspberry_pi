@@ -26,7 +26,7 @@ static const int HID_REPORT_TYPE_OUTPUT = 0x02;
 static const int HID_REPORT_TYPE_FEATURE = 0x03;
 
 static const int INTERFACE_NUMBER = 0;
-static const int TIMEOUT_MS = 100;
+static const int TIMEOUT_MS = 500;
 
 unsigned char data_in[64];
 unsigned char data_out[64];
@@ -251,6 +251,7 @@ int main(int argc, char **argv) {
 		}else{
 		  if (button_last!=0){
 		    printf("u:\n");
+		    fflush(stdout);
 		  }
 		}
 	      }
