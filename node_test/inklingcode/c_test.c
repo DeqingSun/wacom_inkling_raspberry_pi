@@ -31,7 +31,7 @@ static const int TIMEOUT_MS = 1000;
 unsigned char data_in[64];
 unsigned char data_out[64];
 
-int debug_output=1;
+int debug_output=0;
 
 int send_control_transfer(libusb_device_handle *devh,char *buf, int len){
   memset (data_out,0,64);
@@ -234,11 +234,28 @@ int main(int argc, char **argv) {
 	      int y_tilt=(signed char)data_in[9];
 		
 	      printf("x:%d\ty:%d\tb:%d\tp:%d\txt:%d\tyt:%d\n",x,y,button,pressure,x_tilt,y_tilt);
-	    }else{
-	      for(i = 0; i < bytes_transferred; i++){
-		printf("%02x ",data_in[i]);
+	    }else if (data_in[0]==4){
+	      int x=data_in[3]+data_in[2]*256;	//ignore the 3rd byte
+	      if (x>32767) x=x-65536;
+	      int y=data_in[6]+data_in[5]*256;
+	      int button=data_in[7];
+	      int pressure=data_in[8]+data_in[9]*256;
+	      int x_tilt=(signed char)data_in[10];
+	      int y_tilt=(signed char)data_in[11];
+	      if (debug_output){
+		printf("x:%d\ty:%d\tb:%d\tp:%d\txt:%d\tyt:%d\n",x,y,button,pressure,x_tilt,y_tilt);
+	      }else{
+		if (button!=0){
+		  printf("p:%d %d\n",x,y);
+		}
 	      }
-	      printf("\n");
+	    }else{
+	      if (debug_output){
+		for(i = 0; i < bytes_transferred; i++){
+		  printf("%02x ",data_in[i]);
+		}
+		printf("\n");
+	      }
 	    }
 	  }
 	  
