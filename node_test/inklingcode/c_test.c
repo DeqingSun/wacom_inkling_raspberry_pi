@@ -31,6 +31,8 @@ static const int TIMEOUT_MS = 1000;
 unsigned char data_in[64];
 unsigned char data_out[64];
 
+int debug_output=1;
+
 int send_control_transfer(libusb_device_handle *devh,char *buf, int len){
   memset (data_out,0,64);
   memcpy(data_out,buf,len);
@@ -185,38 +187,36 @@ int main(int argc, char **argv) {
   printf( "interface claimed\n" );
 
 
-  {	//try disable first?
+  {//important to enable device, buf[4]=1 will enable output while 2 will disable
+   //seems only 1 and 2 are valid from reading function
     char buf[]={0x80,0x01,0x02,0x01,0x02};
     send_control_transfer(devh,buf,sizeof(buf));
   }  
 
-
-  {
-    char buf[]={0x80,0x01,0x03,0x01,0x02};
+  {//I guess it is setting ID. 01 is mouse and 02 are digitizer,
+   //04 is undefined but looks like raw data we want. 08 has too many data that crash RPi, won't listen to 128
+    int report_id_setting=4;
+    char buf[]={0x80,0x01,0x03,0x01,report_id_setting};
     send_control_transfer(devh,buf,sizeof(buf));
   }
 
-  {
+  {//read back report id settings
     char buf[]={0x80,0x01,0x0A,0x01,0x01,0x03,0x01};
     send_control_transfer(devh,buf,sizeof(buf));
   }
   receive_control_transfer(devh);
 
-  {
+  {//not sure what this is but seems important 
     char buf[]={0x80,0x01,0x0B,0x01};
     send_control_transfer(devh,buf,sizeof(buf));
   }
-  
-  {
+
+  {//re-enable output
     char buf[]={0x80,0x01,0x02,0x01,0x01};
     send_control_transfer(devh,buf,sizeof(buf));
   }
-
-
-
   
   printf("Yeah\n");
-
 
   int bytes_transferred;
 
@@ -226,17 +226,21 @@ int main(int argc, char **argv) {
 	case 0:	//success
 	  {
 	    if (data_in[0]==2){
-          int x=data_in[1]+data_in[2]*256;
-          int y=data_in[3]+data_in[4]*256;
-          int button=data_in[5];
-          int pressure=data_in[6]+data_in[7]*256;
-          int x_tilt=(signed char)data_in[8];
-          int y_tilt=(signed char)data_in[9];
-            
-          printf("x:%d\ty:%d\tb:%d\tp:%d\txt:%d\tyt:%d\n",x,y,button,pressure,x_tilt,y_tilt);
+	      int x=data_in[1]+data_in[2]*256;
+	      int y=data_in[3]+data_in[4]*256;
+	      int button=data_in[5];
+	      int pressure=data_in[6]+data_in[7]*256;
+	      int x_tilt=(signed char)data_in[8];
+	      int y_tilt=(signed char)data_in[9];
+		
+	      printf("x:%d\ty:%d\tb:%d\tp:%d\txt:%d\tyt:%d\n",x,y,button,pressure,x_tilt,y_tilt);
+	    }else{
+	      for(i = 0; i < bytes_transferred; i++){
+		printf("%02x ",data_in[i]);
+	      }
+	      printf("\n");
 	    }
 	  }
-	  
 	  
 	  break;
 	  
