@@ -14,11 +14,20 @@ var cornerX=[0,1,1,0];
 var cornerY=[0,0,1,1];
 var strokeX=[];
 var strokeY=[];
+var vertical_split=2;
+
+var check_stroke;
+var main_canvas_content;
+
+var name_list=["Amanda Agulnick","Elinore Aladjem","Alexandra Alfaro","Lisa Barrette","Caroline Bevan","Tony Briggs","Daniel Cohen","Emily Conrad","Gideon D'Arcangelo","Bridget Day","Courtley Dennis","Mayura Deschpande","Soley Esteves","Debra Everett"-"Lane","Frank Famiglietti","Yu Ting Feng","John Fink","Jessica Fiorini","Morgen Fleisig","Stuart Fox","Joanne Freedman","Sarah Frankel","Michelle Gagne","Greg Gallimore","Lauren Gibbons","Clay Gish","Jack Goddu","Leah Gotcsik","Angela Greene","Chris Griggs","Jonathan Grimm","Laura Gunther","Kris Haberman","H.K Han","Kevin Harper","Baldur Helgason"];
 
 function init() { 
   wsUri = "ws://"+window.location.hostname+":8081";
   output = document.getElementById("output"); 
-  testWebSocket(); 
+  testWebSocket();
+  
+  var c=document.getElementById("myCanvas");
+  main_canvas_content=c.getContext("2d");
   
 }  
 function testWebSocket() { 
@@ -49,14 +58,12 @@ function onMessage(evt) {
 	    //var p=parseInt(array[3].substring(2).trim(),10);
 	    
 	    if (his_p==true){
-	      var c=document.getElementById("myCanvas");
-	      var ctx=c.getContext("2d");
-	
-	      ctx.beginPath(); 
-	      ctx.moveTo((his_x+10000)/20,(his_y-1000)/20);
-	      ctx.lineTo((x+10000)/20,(y-1000)/20);
-	      ctx.stroke(); // Draw it
-	      console.log("DRAW");
+	      main_canvas_content.strokeStyle = "#000";
+	      main_canvas_content.beginPath(); 
+	      main_canvas_content.moveTo((his_x+10000)/20,(his_y-1000)/20);
+	      main_canvas_content.lineTo((x+10000)/20,(y-1000)/20);
+	      main_canvas_content.stroke(); // Draw it
+	      //console.log("DRAW");
 	    }
 	    
 	    his_x=x;
@@ -68,47 +75,65 @@ function onMessage(evt) {
       }
   } else if (evt.data.startsWith("u:")) {
     his_p=false;
-    if (nowCalibrating>=0) {
-      cornerX[nowCalibrating]=his_x;
-      cornerY[nowCalibrating]=his_y;
-      switch(nowCalibrating){
-	case 0:
-	  nowCalibrating=1;
-	  document.getElementById("caliBtn").value="Calibrating upper right";
-	  break;
-	case 1:
-	  nowCalibrating=2;
-	  document.getElementById("caliBtn").value="Calibrating lower right";
-	  break;
-	case 2:
-	  nowCalibrating=3;
-	  document.getElementById("caliBtn").value="Calibrating lower left";
-	  break;
-	case 3:
-	  nowCalibrating=-1;
-	  document.getElementById("caliBtn").value="Calibrated";
-	  break;
-      }
-    }else{
-      //calculate center of stroke
-      var stroke_centerX = (Math.min.apply(null, strokeX)+Math.max.apply(null, strokeX))/2;
-      var stroke_centerY = (Math.min.apply(null, strokeY)+Math.max.apply(null, strokeY))/2;
-      
-      //ctx.fillRect(((stroke_centerX+10000)/20)-5,((stroke_centerY-1000)/20)-5,10,10); // fill in the pixel at (10,10)
-      
-      if (pnpoly(4, cornerX, cornerY, stroke_centerX, stroke_centerY)) {
-	console.log("IN");
+    
+    clearTimeout(check_stroke)
+    check_stroke=setTimeout(function(){
+      if (nowCalibrating>=0) {
+	cornerX[nowCalibrating]=his_x;
+	cornerY[nowCalibrating]=his_y;
+	switch(nowCalibrating){
+	  case 0:
+	    nowCalibrating=1;
+	    document.getElementById("caliBtn").value="Calibrating upper right";
+	    break;
+	  case 1:
+	    nowCalibrating=2;
+	    document.getElementById("caliBtn").value="Calibrating lower right";
+	    break;
+	  case 2:
+	    nowCalibrating=3;
+	    document.getElementById("caliBtn").value="Calibrating lower left";
+	    break;
+	  case 3:
+	    nowCalibrating=-1;
+	    document.getElementById("caliBtn").value="Calibrated";
+	    break;
+	}
       }else{
-	console.log("OUT");
+	//calculate center of stroke
+	var stroke_centerX = (Math.min.apply(null, strokeX)+Math.max.apply(null, strokeX))/2;
+	var stroke_centerY = (Math.min.apply(null, strokeY)+Math.max.apply(null, strokeY))/2;
+	
+	main_canvas_content.fillStyle = "#f00";
+	main_canvas_content.fillRect(((stroke_centerX+10000)/20)-1,((stroke_centerY-1000)/20)-1,2,2); // fill in the pixel at (10,10)
+	
+	if (pnpoly(4, cornerX, cornerY, stroke_centerX, stroke_centerY)) {
+	  console.log("IN");
+	}else{
+	  console.log("OUT");
+	}
+	
+	//check if it is in a certian cell
+	
+	for (var i=0;i<vertical_split;i++){	//needs optimization
+	  if (check_cell_area(i,i+1,vertical_split,stroke_centerX,stroke_centerY,cornerX,cornerY)) {
+	    console.log("IN cell"+i);
+	    document.getElementById("infoOutput").innerHTML=name_list[i]; 
+	    break;
+	  }
+	}			    
       }
       
       strokeX=[];
       strokeY=[];
-    }
-  }
-  
-  
+    },1000);	//interval more than 1000ms is considered as a new signature.
+      
+   
+      
 
+  }
+
+  
    // Keep just the numbers
   // array = array.filter(function(i) {return "" + +i == i});
 
@@ -133,6 +158,8 @@ window.addEventListener("load", init, false);
 
 function CalibrateCells() {
   nowCalibrating=0;
+  
+  vertical_split=document.getElementById("celldivText").value;
   document.getElementById("caliBtn").value="Calibrating upper left";
 }
 
@@ -148,6 +175,24 @@ function pnpoly(nvert, vertx, verty, testx, testy){
   return c;
 }
 
+function point_fraction(numerator,denominator,x1,y1,x2,y2){
+  x=x1+(numerator*(x2-x1)/denominator);
+  y=y1+(numerator*(y2-y1)/denominator);
+  return [x,y];
+}
+
+function check_cell_area(numerator0,numerator1,denominator,targetX,targetY,cornerXlist,cornerYlist){
+      
+    var pt0=point_fraction(numerator0,denominator,cornerXlist[0],cornerYlist[0],cornerXlist[3],cornerYlist[3]);
+    var pt1=point_fraction(numerator0,denominator,cornerXlist[1],cornerYlist[1],cornerXlist[2],cornerYlist[2]);
+    var pt2=point_fraction(numerator1,denominator,cornerXlist[1],cornerYlist[1],cornerXlist[2],cornerYlist[2]);
+    var pt3=point_fraction(numerator1,denominator,cornerXlist[0],cornerYlist[0],cornerXlist[3],cornerYlist[3]);
+    
+    if (pnpoly(4, [pt0[0],pt1[0],pt2[0],pt3[0]], [pt0[1],pt1[1],pt2[1],pt3[1]], targetX, targetY)) {
+      return true;
+    }
+    return false;
+}
 </script>
 
 </head>
@@ -155,7 +200,9 @@ function pnpoly(nvert, vertx, verty, testx, testy){
 <body>
   <h2>WebSocket Table test</h2>  
   <div id="output"></div>
+  <div id="infoOutput"></div>
   <div>
+    <input type="text" id="celldivText" value="36">
     <input type="button" id="caliBtn" onclick="CalibrateCells()" value="Calibrate" >
   </div>
   <canvas id="myCanvas" width="1000" height="1200" style="border:1px solid #d3d3d3;">
