@@ -36,3 +36,11 @@ sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 80 -j REDIRECT --to-po
 ##Run node in background
 nohup node main_inkling.js &
 
+##Run node on startup
+
+sudo nano /etc/rc.local
+
+cd /home/pi/node_test/
+nohup "node ful path" main_inkling.js &
+
+
